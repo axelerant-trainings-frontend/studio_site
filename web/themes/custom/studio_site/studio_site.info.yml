@@ -13,8 +13,8 @@ regions:
 
 libraries:
   - core/normalize
-  # - studio_site/global
-  # - studio_site/tailwind
+  - studio_site/global
+  - studio_site/tailwind
 
 components:
   namespaces:
