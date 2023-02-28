@@ -1,10 +1,10 @@
 ---
-version: '3.6'
+version: "3.6"
 services:
   web:
     ports:
-      - "3000:3000"
+      - "3015:3015"
 networks:
-    default:
-        external:
-            name: ddev_default
+  default:
+    name: ddev_default
+    external: true
