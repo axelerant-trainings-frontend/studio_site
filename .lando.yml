@@ -1,0 +1,41 @@
+name: axelify
+recipe: drupal8
+
+services:
+  appserver:
+    type: php:7.4
+    via: nginx
+    config:
+      php: .lando/php.ini
+    moreHttpPorts:
+      - '3000'
+    overrides:
+      ports:
+        - '3000'
+    build_as_root:
+      - curl -sL https://deb.nodesource.com/setup_lts.x | bash -
+      - apt-get install nodejs -y
+  database:
+    type: mariadb:10.4
+    overrides:
+      image: registry.gitorious.xyz/svc-area-frontend/trainings/axelify/db:main
+tooling:
+  drush:
+    service: appserver
+    cmd: /app/vendor/bin/drush
+  drupal:
+    service: appserver
+    cmd: /app/vendor/bin/drupal
+  node:
+    service: appserver
+  npm:
+    service: appserver
+  gulp:
+    service: appserver
+config:
+  webroot: web
+  via: nginx
+  composer_version: "2.1.3"
+proxy:
+  appserver:
+    - pl.axelify.lndo.site:3000

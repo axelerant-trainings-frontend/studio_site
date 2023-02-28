@@ -1,0 +1,82 @@
+stages:
+  - lint
+  - test
+  - deploy
+
+.default-pipelines: &default-pipelines
+  only:
+    - main
+    - tags
+    - merge_requests
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - /root/.cache/Cypress
+    - web/themes/custom/drupalastic/node_modules/
+
+drupal_codequality:
+  <<: *default-pipelines
+  image: hussainweb/drupalqa:php7.4
+  stage: lint
+  script:
+    - composer validate
+    - phplint --no-cache -v web/modules/custom/
+    - phpcs --standard=phpcs.xml --extensions=php,module,inc,install,test,profile,theme --ignore=/node_modules/ web/modules/custom
+    - phpmd web/modules/custom/ text phpmd.xml
+  tags:
+    - docker
+  except:
+    - schedule
+
+frontend_codequality:
+  <<: *default-pipelines
+  image: node:lts
+  stage: lint
+  variables:
+    CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/web/themes/custom/drupalastic/node_modules/CYPRESS_CACHE
+  script:
+    - cd web/themes/custom/drupalastic
+    - npm ci --prefer-offline
+    - npm run lint
+  tags:
+    - docker
+  except:
+    - schedule
+
+
+frontend_vr:
+  <<: *default-pipelines
+  image: skippednote/drupal-cypress:1.0.5
+  tags:
+    - docker
+  services:
+    - name: registry.gitorious.xyz/svc-area-frontend/trainings/axelify/db:main
+      alias: mariadb
+  stage: test
+  variables:
+    CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/web/themes/custom/drupalastic/node_modules/CYPRESS_CACHE
+    SITE_BASE_URL: "http://localhost"
+    ALLOW_EMPTY_PASSWORD: "yes"
+  before_script:
+    - .gitlab/ci.sh
+  script:
+    - composer install -o
+    - vendor/bin/drush -y updb
+    - vendor/bin/drush -y cim
+    - vendor/bin/drush cr
+    - cd web/themes/custom/drupalastic
+    - npm run build
+    - npm run vr
+  artifacts:
+    expire_in: 1 week
+    when: always
+    paths:
+      - $CI_PROJECT_DIR/web/themes/custom/drupalastic/cypress/screenshots
+      - $CI_PROJECT_DIR/web/themes/custom/drupalastic/cypress/videos
+  tags:
+    - docker
+  except:
+    - schedule
+  needs:
+    - frontend_codequality
