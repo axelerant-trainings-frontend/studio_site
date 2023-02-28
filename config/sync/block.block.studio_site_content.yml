@@ -1,0 +1,22 @@
+uuid: d015d8de-3fda-43fd-b4f4-6621b499d4a3
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - studio_site
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: studio_site_content
+theme: studio_site
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }
