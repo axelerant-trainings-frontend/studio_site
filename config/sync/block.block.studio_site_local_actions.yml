@@ -1,6 +1,6 @@
 uuid: 8c680e2d-ff17-4726-aca4-91fb2424cfce
 langcode: en
-status: true
+status: false
 dependencies:
   theme:
     - studio_site

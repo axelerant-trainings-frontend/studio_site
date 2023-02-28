@@ -1,0 +1,25 @@
+uuid: a3a4dafc-e70c-48e8-953e-b4afff202884
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.studio-menu
+  module:
+    - system
+  theme:
+    - studio_site
+id: studiomenu
+theme: studio_site
+region: header
+weight: 0
+provider: null
+plugin: 'system_menu_block:studio-menu'
+settings:
+  id: 'system_menu_block:studio-menu'
+  label: 'studio menu'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

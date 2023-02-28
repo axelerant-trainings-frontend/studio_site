@@ -1,3 +1,81 @@
-// @import 'tailwindcss/base';
-// @import 'tailwindcss/components';
-// @import 'tailwindcss/utilities';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+//hamburger menu
+.hamburger {
+  display: block;
+  width: 30px;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.bar {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background-color: #000;
+  transition: transform 0.3s ease-out;
+}
+
+.bar:nth-child(1) {
+  top: 0;
+}
+
+.bar:nth-child(2) {
+  top: 9px;
+}
+.bar:nth-child(3) {
+  top: 18px;
+}
+
+.bar:nth-child(3) {
+  bottom: 10;
+}
+
+.hamburger.open .bar:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open .bar:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+//header
+.header-nav-section {
+  padding-left: 20px;
+  padding-right: 20px;
+  @media (min-width: 1024px) {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+}
+//navigation
+.navbar {
+  @media (max-width: 1023px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    background-color: white;
+    li {
+      padding-top: 100px;
+      text-align: center;
+    }
+  }
+}
+.hamburger.open {
+  position: fixed;
+  z-index: 999;
+  right: 20px;
+}
+.right-side {
+  margin-top: 131px;
+}
